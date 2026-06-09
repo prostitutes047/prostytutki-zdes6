@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elite Service</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, sans-serif;
+}
+
+body{
+background: radial-gradient(circle at top, #121a33, #070a12);
+color:#fff;
+overflow-x:hidden;
+}
+
+/* HEADER */
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 50px;
+background:rgba(15,22,41,0.85);
+backdrop-filter:blur(10px);
+border-bottom:1px solid #1f2a44;
+}
+
+.logo{
+font-weight:800;
+letter-spacing:2px;
+}
+
+.btn{
+background:linear-gradient(135deg,#1f6fff,#00e5ff);
+border:none;
+padding:10px 16px;
+border-radius:16px;
+color:white;
+cursor:pointer;
+transition:0.2s;
+}
+
+.btn:hover{
+transform:scale(1.05);
+}
+
+/* MAIN */
+.container{
+max-width:900px;
+margin:70px auto;
+padding:0 20px;
+}
+
+.card{
+background:rgba(17,26,46,0.85);
+padding:25px;
+border-radius:18px;
+text-align:center;
+border:1px solid #1f2a44;
+backdrop-filter:blur(10px);
+}
+
+.price{
+font-size:32px;
+color:#00e5ff;
+margin:15px 0;
+font-weight:700;
+}
+
+.grid{
+display:flex;
+gap:15px;
+flex-wrap:wrap;
+margin-top:25px;
+}
+
+.box{
+flex:1;
+min-width:200px;
+background:#0f1629;
+padding:15px;
+border-radius:16px;
+border:1px solid #1f2a44;
+}
+
+/* MODAL BACKDROP */
+.modal{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.92);
+justify-content:center;
+align-items:center;
+z-index:9999;
+}
+
+/* CARD STYLE (ОДИНАКОВЫЙ ДЛЯ ВСЕГО) */
+.modal-content, .chat-box{
+background:#111a2e;
+border-radius:18px;
+border:1px solid #1f2a44;
+overflow:hidden;
+}
+
+/* ORDERS */
+.orders-box{
+margin-top:15px;
+text-align:left;
+background:#0f1629;
+padding:12px;
+border-radius:14px;
+border:1px solid #1f2a44;
+}
+
+.status{
+color:#ff9800;
+font-weight:700;
+}
+
+/* CHAT */
+.chat-box{
+width:360px;
+display:flex;
+flex-direction:column;
+}
+
+.chat-header{
+padding:12px;
+background:#0f1629;
+text-align:center;
+font-weight:bold;
+}
+
+.chat-body{
+height:220px;
+padding:10px;
+font-size:13px;
+overflow:auto;
+text-align:left;
+}
+
+.chat-input{
+display:flex;
+border-top:1px solid #1f2a44;
+}
+
+.chat-input input{
+flex:1;
+padding:10px;
+border:none;
+outline:none;
+background:#0f1629;
+color:#fff;
+}
+
+.chat-input button{
+border:none;
+background:#1f6fff;
+color:#fff;
+padding:10px;
+cursor:pointer;
+border-radius:0 0 18px 0;
+}
+
+/* SPINNER */
+.spinner{
+width:40px;
+height:40px;
+border:4px solid #1f2a44;
+border-top:4px solid #00e5ff;
+border-radius:50%;
+margin:15px auto;
+animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+0%{transform:rotate(0deg);}
+100%{transform:rotate(360deg);}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo">ELITE SERVICE</div>
+
+<div style="display:flex;gap:10px;">
+<button class="btn"
+style="background:linear-gradient(135deg,#8b5cf6,#c084fc);"
+onclick="openAccount()">
+👤 Личный кабинет
+</button>
+
+<button class="btn" onclick="openSupport()">
+Поддержка
+</button>
+</div>
+</header>
+
+<div class="container">
+
+<div class="card">
+<h1>Онлайн бронирование</h1>
+<p>Премиальный сервис управления заказами</p>
+
+<div class="price"> 47 800 ₽</div>
+
+<button class="btn" onclick="openOrders()">Открыть заказы</button>
+</div>
+
+<div class="grid">
+<div class="box"><h3>⚡ Быстро</h3><p>Мгновенная обработка</p></div>
+<div class="box"><h3>🔒 Безопасно</h3><p>Защищённые данные</p></div>
+<div class="box"><h3>💬 Поддержка</h3><p>24/7 онлайн</p></div>
+</div>
+
+</div>
+
+<!-- ORDERS -->
+<div class="modal" id="ordersModal">
+<div class="modal-content" style="padding:22px;width:360px;text-align:center;">
+
+<h3>📦 Открытые заказы</h3>
+
+<div class="orders-box">
+<p>📦 #784291 — <span class="status">Ожидает оплаты</span></p>
+<p>📦 #912640 — <span class="status">Ожидает оплаты</span></p>
+<p>📦 #550318 — <span class="status">Ожидает оплаты</span></p>
+</div>
+
+<button class="btn" style="margin-top:10px;" onclick="payOrders()">
+💳 Оплатить заказы
+</button>
+
+<button class="btn" style="background:#444;margin-top:10px;" onclick="closeOrders()">
+Закрыть
+</button>
+
+</div>
+</div>
+
+<!-- LOADING -->
+<div class="modal" id="loadingModal">
+<div class="modal-content" style="padding:22px;width:360px;text-align:center;">
+<h3>🔍 Ищем реквизиты...</h3>
+<div class="spinner"></div>
+<p style="opacity:0.7;">Пожалуйста, подождите</p>
+</div>
+</div>
+
+<!-- RESULT -->
+<div class="modal" id="payModal">
+<div class="modal-content" style="padding:22px;width:360px;text-align:center;">
+
+<h2 style="color:#ff4d4d;">❌ Реквизиты не найдены</h2>
+
+<p style="margin:12px 0;">
+Для оплаты уточните реквизиты у администратора.
+</p>
+
+<button class="btn" onclick="closePay()">Понятно</button>
+
+</div>
+</div>
+
+<!-- CHAT -->
+<div class="modal" id="supportModal">
+<div class="chat-box">
+
+<div class="chat-header">💬 Чат с администратором</div>
+
+<div class="chat-body" id="chatBox">
+<div>👨‍💼 Администратор: Здравствуйте! Чем могу помочь?</div>
+</div>
+
+<div class="chat-input">
+<input id="chatInput" placeholder="Напишите сообщение...">
+<button onclick="sendMessage()">➤</button>
+</div>
+
+<button class="btn" style="background:#444;border-radius:0;" onclick="closeSupport()">
+❌ Отмена
+</button>
+
+</div>
+</div>
+
+<!-- ACCOUNT -->
+<div class="modal" id="accountModal">
+<div class="modal-content" style="padding:22px;width:360px;text-align:center;">
+
+<h3>👤 Личный кабинет</h3>
+
+<div class="orders-box">
+<p><b>ID клиента:</b> #100784</p>
+<p><b>Статус:</b> <span style="color:#00e5ff;">VIP</span></p>
+<p><b>Баланс:</b> 0 ₽</p>
+<p><b>Активных заказов:</b> 3</p>
+</div>
+
+<button
+class="btn"
+style="background:linear-gradient(135deg,#8b5cf6,#c084fc);margin-top:10px;"
+onclick="closeAccount()">
+Закрыть
+</button>
+
+</div>
+</div>
+
+<script>
+
+function openOrders(){
+document.getElementById("ordersModal").style.display="flex";
+}
+
+function closeOrders(){
+document.getElementById("ordersModal").style.display="none";
+}
+
+function payOrders(){
+document.getElementById("ordersModal").style.display="none";
+document.getElementById("loadingModal").style.display="flex";
+
+setTimeout(()=>{
+document.getElementById("loadingModal").style.display="none";
+document.getElementById("payModal").style.display="flex";
+},1500);
+}
+
+function closePay(){
+document.getElementById("payModal").style.display="none";
+}
+
+function openSupport(){
+document.getElementById("supportModal").style.display="flex";
+}
+
+function closeSupport(){
+document.getElementById("supportModal").style.display="none";
+}
+
+function sendMessage(){
+let input=document.getElementById("chatInput");
+let box=document.getElementById("chatBox");
+
+if(input.value.trim()==="") return;
+
+box.innerHTML += "<div>🧑 Вы: " + input.value + "</div>";
+
+let text=input.value;
+input.value="";
+
+setTimeout(()=>{
+box.innerHTML += "<div style='color:#00e5ff;'>👨‍💼 Администратор: Я получил сообщение: " + text + "</div>";
+box.scrollTop = box.scrollHeight;
+},1200);
+}
+
+function openAccount(){
+document.getElementById("accountModal").style.display="flex";
+}
+
+function closeAccount(){
+document.getElementById("accountModal").style.display="none";
+}
+
+</script>
+
+</body>
+</html>
