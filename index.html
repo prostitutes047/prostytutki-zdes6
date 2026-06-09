@@ -187,6 +187,29 @@ animation:spin 1s linear infinite;
 
 <body>
 
+<div class="order-client">
+    📞 Номер заказчика: <a href="tel:+79010010203">+7 (901) 001-02-03</a>
+</div>
+
+<style>
+.order-client{
+    margin:20px;
+    padding:12px 15px;
+    background:#111;
+    border:1px solid gold;
+    border-radius:10px;
+    color:white;
+    font-size:16px;
+    display:inline-block;
+}
+
+.order-client a{
+    color:gold;
+    text-decoration:none;
+    font-weight:bold;
+}
+</style>
+
 <header>
 <div class="logo">ELITE SERVICE</div>
 
@@ -372,6 +395,47 @@ document.getElementById("accountModal").style.display="none";
 }
 
 </script>
+
+<div class="order-block">
+    <div class="order-title">💎 Позвонить Администратору</div>
+    <a href="tel:+79090010101" class="order-phone">
+        +7 (909) 001-01-01
+    </a>
+</div>
+
+<style>
+.order-block{
+    margin:30px auto;
+    max-width:400px;
+    padding:20px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.15);
+    border-radius:20px;
+    text-align:center;
+    backdrop-filter:blur(10px);
+}
+
+.order-title{
+    color:#fff;
+    font-size:18px;
+    font-weight:600;
+    margin-bottom:10px;
+    letter-spacing:1px;
+}
+
+.order-phone{
+    color:#ffd700;
+    font-size:24px;
+    font-weight:700;
+    text-decoration:none;
+    transition:0.3s;
+}
+
+.order-phone:hover{
+    color:#ffffff;
+    text-shadow:0 0 15px #ffd700;
+}
+</style>
 
 </body>
 </html>
